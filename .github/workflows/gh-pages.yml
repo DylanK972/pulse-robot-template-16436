@@ -24,7 +24,12 @@ jobs:
           node-version: 20
       - run: npm ci
       - run: npm run build
-      - run: cp dist/index.html dist/404.html || true
+      # ✅ Ajout pour forcer la copie du fichier index.html
+      - name: Ensure index.html exists for GitHub Pages
+        run: |
+          mkdir -p dist
+          cp dist/index.html dist/404.html || true
+          cp dist/index.html dist/index.htm || true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
