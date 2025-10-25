@@ -28,12 +28,16 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      # Fallback SPA (évite 404 sur les routes)
+      # Vérifie si le dossier dist existe
+      - run: ls -la dist || echo "Le dossier dist est introuvable"
+      
+      # Copie index.html en 404.html pour les routes SPA
       - run: cp dist/index.html dist/404.html || true
 
+      # Upload du dossier dist pour GitHub Pages
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist   # si ton build sort dans "build", remplace par ./build
+          path: ./dist
 
   deploy:
     needs: build
